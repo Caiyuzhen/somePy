@@ -1,3 +1,6 @@
+# discord 库
+- pip3 install discord.py
+
 # 获环境变量的库
 - pip3 install python-dotenv
 
