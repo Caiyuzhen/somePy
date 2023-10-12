@@ -42,20 +42,50 @@ async def synccommands(ctx):
     
 
 @bot.hybrid_command()
-async def hello(ctx):
+async def hello(ctx): # 定义 hello 命令
     """基础命令"""
     await ctx.send("🌞 天气晴朗")
 
 @bot.hybrid_command()
-async def addnum(ctx, a: int, b: int):
+async def addnum(ctx, a: int, b: int): # 定义 addnum 命令
     """给传入的参数做加法的命令"""
     await ctx.send(a + b)
     
     
 # 👇石头剪刀布小游戏
+class PlayView(discord.ui.View):
+    def get_content(self, label):
+        counter = { # ⚡️定义输了的情况
+			"剪刀": "石头",
+   			"石头": "布",
+			"布": "剪刀"
+		}
+        return f"你出了 {label}, 电脑出了 {counter[label]}, 你输了"
+
+	# 出剪刀的情况
+    @discord.ui.button(label="剪刀", style=discord.ButtonStyle.green, emoji="✌️")
+    async def scissors(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.edit_message(content=self.get_content(button.label)) 
+    
+	# 出石头的情况
+    @discord.ui.button(label="石头", style=discord.ButtonStyle.green, emoji="✊")
+    async def rock(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.edit_message(content=self.get_content(button.label)) 
+        
+	# 出布的情况
+    discord.ui.button(label="布", style=discord.ButtonStyle.green, emoji="👋")
+    async def paper(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.edit_message(content=self.get_content(button.label)) 
+    
+    # 退出游戏
+    @discord.ui.button(label="不玩了", style=discord.ButtonStyle.red) # ⚡️ discord 消息卡片的按钮组件
+    async def stop(self, interaction: discord.Interaction, button: discord.ui.Button):
+        await interaction.response.edit_message(content="⛔️ 游戏结束", view=None) # ⚡️ interaction.response.edit_message 为修改当前 message 的内容 content
+
 @bot.hybrid_command()
-async def play(ctx):
-    await ctx.send("选择你要出什么", view=PlayView())
+async def play(ctx): # 定义 play 命令
+    """石头剪刀布小游戏"""
+    await ctx.send("选择你要出什么", view=PlayView()) # 🔥🔥 调用 PlayView() 类, 让用户可以通过按钮选择出什么
 
 
     

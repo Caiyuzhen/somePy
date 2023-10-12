@@ -1,3 +1,6 @@
+# 安装所有依赖
+- pip3 install -r requirements.txt
+  
 # discord 库
 - pip3 install discord.py
 
@@ -9,6 +12,7 @@
 
 # 添加命令
 - @bot.command() 
+
 
 
 
